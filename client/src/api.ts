@@ -25,9 +25,11 @@ export type SavedEntry = {
 
 
 
+const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8081';
+
 export const getEntries = async () => {
     try{
-        const result = await fetch('http://localhost:3001/entries')
+    const result = await fetch(`${API_BASE}/entries`)
         if(!result.ok){
             throw new Error('Could not retrieve entries');
         }
@@ -39,7 +41,7 @@ export const getEntries = async () => {
 
 export const createEntry = async (entry:Entry) => {
     try{
-        const result = await fetch('http://localhost:3001/entries', {
+        const result = await fetch(`${API_BASE}/entries`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'},
