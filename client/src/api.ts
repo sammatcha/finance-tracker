@@ -25,7 +25,9 @@ export type SavedEntry = {
 
 
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8081';
+const API_BASE = import.meta.env.PROD
+    ? (import.meta.env.VITE_API_URL || '')
+    : (import.meta.env.VITE_API_URL || 'http://localhost:8081');
 
 export const getEntries = async () => {
     try{
