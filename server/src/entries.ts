@@ -8,7 +8,11 @@ router.get('/', async (req, res) => {
         const results = await db.query('SELECT * FROM entries');
         res.json(results.rows);
     }catch(err){
-        res.status(500).json({ error: 'Could not retrieve entries' });
+        console.error(err);
+        res.status(500).json({
+            error: 'Could not retrieve entries',
+            detail: err instanceof Error ? err.message : String(err)
+        });
     }
 })
 
@@ -19,8 +23,11 @@ router.post('/', async (req, res) => {
             res.status(201).json(result.rows[0]);
             
     }catch(err){
-        res.status(500).json({error: 'Could not create entry', });
-        console.error(err)
+        console.error(err);
+        res.status(500).json({
+            error: 'Could not create entry',
+            detail: err instanceof Error ? err.message : String(err)
+        });
 }
 })
 

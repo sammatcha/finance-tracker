@@ -50,10 +50,11 @@ export const createEntry = async (entry:Entry) => {
                 body: JSON.stringify(entry),
         })
          if(!result.ok){
-            throw new Error('Could not create entry');
+            const body = await result.json().catch(() => ({}));
+            throw new Error(body.detail || body.error || 'Could not create entry');
         }
         return result.json();
     }catch(err){
-        throw new Error('Could not create entry' , {cause:err}) ;
+        throw new Error(err instanceof Error ? err.message : 'Could not create entry', {cause:err}) ;
     }
 }
