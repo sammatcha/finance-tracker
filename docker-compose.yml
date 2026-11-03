@@ -25,6 +25,11 @@ services:
       DB_HOST: db
       DB_PORT: 5432
       DB_NAME: ${DB_NAME:-finance_tracker}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8081/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     depends_on:
       db:
         condition: service_healthy
@@ -37,7 +42,8 @@ services:
     ports:
       - "8080:80"
     depends_on:
-      - server
+      server:
+        condition: service_healthy
 
 volumes:
   postgres_data:

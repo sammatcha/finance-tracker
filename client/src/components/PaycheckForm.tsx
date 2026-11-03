@@ -56,7 +56,7 @@ export default function Form(){
             setEntries((prev) => [saved, ...prev])
             setDeposit('')
         }catch(err) {
-            setError('Could not save paychecks')
+            setError(err instanceof Error ? err.message : 'Could not save paychecks')
             console.error(err)
         }
         finally {
