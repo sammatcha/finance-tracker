@@ -1,6 +1,6 @@
 import express = require('express');
 import entries = require('./entries');
-import db = require('./db');
+import ensureSchema = require('./schema');
 
 
 const app = express();
@@ -16,19 +16,7 @@ app.use('/entries', entries);
 
 async function start() {
     try {
-        await db.query(`
-            CREATE TABLE IF NOT EXISTS entries (
-                id SERIAL PRIMARY KEY,
-                date TEXT,
-                total NUMERIC,
-                emergency NUMERIC,
-                loan NUMERIC,
-                student_loan NUMERIC,
-                travel NUMERIC,
-                invest NUMERIC,
-                left_over NUMERIC
-            )
-        `);
+        await ensureSchema();
         console.log('Database table entries is ready');
     } catch (err) {
         console.error('Database setup failed', err);
